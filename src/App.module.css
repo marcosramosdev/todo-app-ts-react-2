@@ -4,3 +4,18 @@
   min-height: 100vh;
   text-align: center;
 }
+
+.todo__item {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  width: fit-content;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}

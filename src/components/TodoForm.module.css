@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 20rem;
+  margin: 1rem auto;
+  gap: 2rem;
+}
+
+.form__input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}

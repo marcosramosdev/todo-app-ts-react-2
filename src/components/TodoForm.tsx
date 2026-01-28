@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type Itask from "../interface/Itask";
+import styles from "./TodoForm.module.css";
 
 type Props = {
   taskList: Itask[];
-  setTaskList: React.Dispatch<React.SetStateAction<Itask[]>>;
+  taskToEdit?: Itask;
+  setTaskList?: React.Dispatch<React.SetStateAction<Itask[]>>;
   formBtnText: "create" | "edit";
+  handleUpdate?: (id: number, title: string) => void;
 };
 
-const TodoForm = ({ taskList, setTaskList, formBtnText }: Props) => {
+const TodoForm = ({
+  taskList,
+  setTaskList,
+  formBtnText,
+  taskToEdit,
+  handleUpdate,
+}: Props) => {
   const [title, setTitle] = useState<string>("");
+  const [id, setId] = useState<number>();
+
+  useEffect(() => {
+    if (taskToEdit) {
+      setId(taskToEdit.id);
+      setTitle(taskToEdit.title);
+    }
+  }, [taskToEdit]);
 
   const handleFormSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -18,27 +35,34 @@ const TodoForm = ({ taskList, setTaskList, formBtnText }: Props) => {
       return;
     }
 
-    const newTask: Itask = {
-      id: Math.random(),
-      title,
-    };
+    if (formBtnText == "create") {
+      const newTask: Itask = {
+        id: Math.random(),
+        title,
+      };
 
-    setTaskList([...taskList, newTask]);
+      setTaskList!([...taskList, newTask]);
+      console.log("new task created", taskList);
+    }
+
+    if (formBtnText === "edit") {
+      handleUpdate(id, title);
+    }
+
     setTitle("");
   };
 
   return (
-    <div>
+    <div className={styles.form}>
       <form onSubmit={handleFormSubmit}>
-        <div>
-          <label htmlFor="">Todo Title:</label>
+        <div className={styles.form__input}>
+          <label htmlFor="">Todo Title</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-
         <button type="submit">{formBtnText} todo</button>
       </form>
     </div>
